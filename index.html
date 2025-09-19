@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+
+<title>Bravo — vous avez trouvé le cadeau Thales</title>
+
+<style>
+  :root{
+    --bg:#0f1724;
+    --card:#0b1220;
+    --accent:#00c2ff;
+    --glass: rgba(255,255,255,0.04);
+    --muted: rgba(255,255,255,0.7);
+    --radius:18px;
+    --shadow: 0 8px 30px rgba(2,6,23,0.6);
+    font-family: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+                 Roboto, "Helvetica Neue", Arial;
+  }
+
+  html,body{height:100%;margin:0;background: linear-gradient(180deg,#071226 0%, #07172a 60%); color:#ecfeff}
+  .wrap{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:32px;
+    box-sizing:border-box;
+  }
+
+  .card{
+    width:100%;
+    max-width:920px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+    border-radius: var(--radius);
+    padding:28px;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(255,255,255,0.03);
+  }
+
+  header{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    margin-bottom:18px;
+  }
+  .logo{
+    width:64px;height:64px;border-radius:12px;
+    display:grid;place-items:center;
+    background:linear-gradient(135deg,var(--accent),#6fffd6);
+    color:#042233;font-weight:700;font-size:18px;
+    box-shadow: 0 6px 18px rgba(0,194,255,0.12);
+  }
+  h1{
+    margin:0;font-size:20px;
+    letter-spacing:0.2px;
+  }
+  p.lead{margin:6px 0 0;color:var(--muted);font-size:13px}
+
+  .image-wrap{
+    margin-top:18px;
+    border-radius:12px;
+    overflow:hidden;
+    background:linear-gradient(180deg,#061426,#07172a);
+    border:1px solid var(--glass);
+  }
+
+  img#gift{
+    display:block;
+    width:100%;
+    height:auto;
+    max-height:65vh;
+    object-fit:cover;
+    transition: transform .6s cubic-bezier(.2,.9,.2,1);
+  }
+  .image-wrap:hover img#gift{ transform: scale(1.02); }
+
+  .controls{
+    display:flex;
+    gap:12px;
+    margin-top:14px;
+    align-items:center;
+  }
+
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:12px 16px;
+    border-radius:12px;
+    border:none;
+    cursor:pointer;
+    font-weight:600;
+    background: linear-gradient(180deg,#0e2a36,#083043);
+    color:#e6feff;
+    box-shadow: 0 6px 22px rgba(3,16,24,0.6);
+    transition: transform .12s ease, box-shadow .12s ease;
+  }
+  .btn:active{ transform: translateY(1px); }
+  .btn.secondary{
+    background:transparent;
+    border:1px solid rgba(255,255,255,0.06);
+    color:var(--muted);
+    font-weight:600;
+  }
+  .btn.primary{
+    background: linear-gradient(90deg,var(--accent),#7cfff0);
+    color:#042233;
+    box-shadow: 0 8px 30px rgba(0,194,255,0.12);
+  }
+
+  .hint{ color:var(--muted); font-size:13px; margin-left:6px; }
+
+  /* Fullscreen view (when opened via param) */
+  .full-screen {
+    display:none;
+  }
+  .fs-img{
+    width:100vw;height:100vh;object-fit:cover;
+    display:block;
+  }
+  .fs-instructions{
+    position:fixed; left:0; right:0; bottom:18px;
+    text-align:center;color:white;background:linear-gradient(180deg,rgba(0,0,0,0.28),rgba(0,0,0,0.56));
+    padding:12px; margin:12px auto; max-width:720px; border-radius:12px;
+    font-size:15px;
+  }
+
+  /* responsive */
+  @media (max-width:640px){
+    .card{ padding:18px; border-radius:14px; }
+    h1{ font-size:18px }
+    .logo{ width:54px;height:54px;font-size:16px }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <main class="card" id="mainCard" role="main">
+    <header>
+      <div class="logo">Thales</div>
+      <div>
+        <h1>Bravo — vous avez trouvé le cadeau Thales</h1>
+        <p class="lead">Cliquez pour télécharger ou définir l'image comme fond d'écran sur votre smartphone.</p>
+      </div>
+    </header>
+
+    <div class="image-wrap" aria-hidden="false">
+      <!-- Remplace le src ci-dessous par le fichier image réel ou une URL complète -->
+      <img id="gift" src="Wallpaper_chat.png" alt="Cadeau Thales - image" crossorigin="anonymous">
+    </div>
+
+    <div class="controls" style="margin-top:14px;">
+      <button id="downloadBtn" class="btn primary" title="Télécharger l'image">
+        ⬇️ Télécharger
+      </button>
+
+      <button id="wallBtn" class="btn secondary" title="Ouvrir l'image en plein écran pour définir comme fond d'écran">
+        🖼️ Mettre en fond d'écran (smartphone)
+      </button>
+
+      <span class="hint" id="deviceHint"></span>
+    </div>
+
+    <p style="margin-top:12px;color:var(--muted);font-size:13px;">
+      Si le téléchargement ne fonctionne pas : clic droit → Enregistrer l'image sous... (ou long appui sur mobile).
+    </p>
+  </main>
+</div>
+
+<!-- Fullscreen viewer behavior: when opened with ?full=1&img=ENCODED_URL will show full-screen image and instructions -->
+<div id="fullscreen" class="full-screen" style="display:none;">
+  <img id="fsImage" class="fs-img" src="" alt="Image plein écran">
+  <div class="fs-instructions" id="fsInstructions">
+    <strong>Instructions pour définir comme fond d'écran</strong><br>
+    Sur Android : faites <em>long appui</em> sur l'image → "Enregistrer l'image" puis dans l'app Photos : menu → "Définir comme fond d'écran".<br>
+    Sur iPhone : faites <em>long appui</em> → "Ajouter aux Photos" puis ouvrez Photos → sélectionnez l'image → partager → "Utiliser comme fond d’écran".
+  </div>
+</div>
+
+<script>
+(function(){
+  const gift = document.getElementById('gift');
+  const downloadBtn = document.getElementById('downloadBtn');
+  const wallBtn = document.getElementById('wallBtn');
+  const hint = document.getElementById('deviceHint');
+
+  // Detect mobile
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent || '');
+  hint.textContent = isMobile ? "Vous êtes sur mobile — appuyez pour ouvrir en plein écran." : "Sur mobile : utilisez 'Mettre en fond d'écran'.";
+
+  // Download handler (tries to download the current image)
+  downloadBtn.addEventListener('click', async () => {
+    const src = gift.src;
+    try {
+      // Attempt to fetch and blob-download (works if CORS allows)
+      const resp = await fetch(src, {mode: 'cors'});
+      if(!resp.ok) throw new Error('Impossible de récupérer l\'image par fetch.');
+      const blob = await resp.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      // Suggest filename from src or fallback
+      const suggested = (src.split('/').pop().split('?')[0]) || 'cadeau-thales.jpg';
+      a.download = suggested;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    } catch (e){
+      // Fallback: open image in new tab and let user save manually
+      window.open(src, '_blank');
+      alert("Téléchargement automatique non possible (CORS). L'image s'ouvre dans un nouvel onglet : faites 'Enregistrer sous' ou long appui sur mobile.");
+    }
+  });
+
+  // Open a "full screen" viewer in a new tab with parameters
+  wallBtn.addEventListener('click', () => {
+    const src = gift.src;
+    const url = new URL(window.location.href.split('?')[0]);
+    url.searchParams.set('full', '1');
+    url.searchParams.set('img', src);
+    window.open(url.toString(), '_blank', 'noopener');
+  });
+
+  // If this page is opened with ?full=1&img=..., show the fullscreen viewer
+  function showFullScreenIfParam() {
+    const params = new URLSearchParams(window.location.search);
+    if(params.get('full') === '1' && params.get('img')) {
+      const imgUrl = params.get('img');
+      document.documentElement.style.background = '#000';
+      document.body.style.background = '#000';
+      const fs = document.getElementById('fullscreen');
+      const fsImg = document.getElementById('fsImage');
+      fs.style.display = 'block';
+      fsImg.src = imgUrl;
+      // Hide the main content when in full view
+      const main = document.getElementById('mainCard');
+      if(main) main.style.display = 'none';
+      // Add a small tap to remove instructions on mobile
+      fsImg.addEventListener('click', () => {
+        const instr = document.getElementById('fsInstructions');
+        if(instr) instr.style.display = instr.style.display === 'none' ? 'block' : 'none';
+      });
+    }
+  }
+
+  // Run on load
+  showFullScreenIfParam();
+
+})();
+</script>
+
+</body>
+</html>
