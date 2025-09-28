@@ -1,171 +1,82 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cadeau Thales</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Wallpaper Chat</title>
+  <!-- Police enchantée -->
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
   <style>
-    /* --------- Palette inspirée de l'image --------- */
-    :root {
-      --bg-dark: #011c28;
-      --bg-mid: #013f4e;
-      --bg-light: #046c7c;
-      --accent: #00f5d4;
-      --accent-glow: rgba(0, 245, 212, 0.6);
-      --text-light: #e0fbfc;
-      --shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
-      --radius: 20px;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
     body {
-      height: 100vh;
-      background: radial-gradient(circle at top, var(--bg-light), var(--bg-mid) 40%, var(--bg-dark) 100%);
-      color: var(--text-light);
-      font-family: 'Inter', sans-serif;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
-      position: relative;
+      margin:0;
+      font-family: 'Great Vibes', cursive;
+      background:#0b0f16;
+      color:#fff;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      min-height:100vh;
+      padding:16px;
     }
 
-    /* --- Particules animées (étoiles/flocons) --- */
-    .particles {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      z-index: 0;
+    .message {
+      font-size:24px;
+      color:#00f0cc;
+      text-shadow:0 0 8px rgba(0,240,204,0.8);
+      margin-bottom:16px;
+      text-align:center;
     }
 
-    .particle {
-      position: absolute;
-      background: white;
-      border-radius: 50%;
-      opacity: 0.7;
-      animation: float 10s infinite ease-in-out;
+    .preview {
+      position:relative;
+      width:100%;
+      max-width:400px;
+      border-radius:20px;
+      overflow:hidden;
+      box-shadow:0 0 30px rgba(0,0,0,0.7);
+    }
+    .preview img {
+      width:100%;
+      height:auto;
+      display:block;
     }
 
-    @keyframes float {
-      0% {
-        transform: translateY(0) scale(1);
-        opacity: 0.7;
-      }
-      50% {
-        transform: translateY(-20px) scale(1.2);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(0) scale(1);
-        opacity: 0.7;
-      }
+    .btn {
+      position:absolute;
+      top:12px;
+      right:12px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      width:48px;
+      height:48px;
+      border-radius:50%;
+      background:linear-gradient(135deg, #00f0cc, #00b3ff);
+      box-shadow:0 6px 18px rgba(0,0,0,0.6), 0 0 12px rgba(0,240,204,0.8);
+      text-decoration:none;
+      transition:transform 0.1s ease;
     }
+    .btn:active { transform:scale(0.9); }
 
-    /* --- Titre --- */
-    h1 {
-      font-family: 'Cinzel', serif;
-      font-size: 2.8rem;
-      text-align: center;
-      color: var(--accent);
-      text-shadow: 0 0 15px var(--accent-glow), 0 0 30px var(--accent-glow);
-      margin-bottom: 25px;
-      position: relative;
-      z-index: 2;
-      animation: fadeIn 1.2s ease;
-    }
-
-    /* --- Image --- */
-    .image-container {
-      border-radius: var(--radius);
-      overflow: hidden;
-      box-shadow: 0 0 40px rgba(0, 245, 212, 0.4), var(--shadow);
-      max-width: 350px;
-      width: 90%;
-      position: relative;
-      z-index: 2;
-      background: rgba(255, 255, 255, 0.05);
-      transition: transform 0.5s ease, box-shadow 0.5s ease;
-    }
-
-    .image-container:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 60px rgba(0, 245, 212, 0.7), var(--shadow);
-    }
-
-    .image-container img {
-      display: block;
-      width: 100%;
-      height: auto;
-    }
-
-    /* --- Bouton télécharger --- */
-    .btn-download {
-      display: inline-block;
-      margin-top: 25px;
-      padding: 14px 32px;
-      font-size: 1.2rem;
-      font-weight: bold;
-      color: var(--bg-dark);
-      background: var(--accent);
-      border: none;
-      border-radius: 30px;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      cursor: pointer;
-      position: relative;
-      z-index: 2;
-      box-shadow: 0 0 20px var(--accent-glow), inset 0 0 10px rgba(255,255,255,0.3);
-    }
-
-    .btn-download:hover {
-      background: #00d9ba;
-      box-shadow: 0 0 30px var(--accent-glow), inset 0 0 10px rgba(255,255,255,0.4);
-      transform: translateY(-3px);
-    }
-
-    /* Animation fade-in */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Responsive */
-    @media (max-width: 480px) {
-      h1 {
-        font-size: 2rem;
-      }
+    .btn svg {
+      width:26px;
+      height:26px;
+      fill:#0b0f16;
     }
   </style>
 </head>
 <body>
-  <!-- Particules -->
-  <div class="particles">
-    <div class="particle" style="width: 6px; height: 6px; top: 10%; left: 20%; animation-duration: 8s;"></div>
-    <div class="particle" style="width: 4px; height: 4px; top: 30%; left: 60%; animation-duration: 12s;"></div>
-    <div class="particle" style="width: 8px; height: 8px; top: 50%; left: 40%; animation-duration: 10s;"></div>
-    <div class="particle" style="width: 5px; height: 5px; top: 80%; left: 70%; animation-duration: 9s;"></div>
-    <div class="particle" style="width: 7px; height: 7px; top: 20%; left: 80%; animation-duration: 11s;"></div>
+  <div class="message">Bravo &#128079; tu as gagné un wallpaper <br/> pour ton smartphone!</div>
+
+  <div class="preview">
+    <img src="Wallpaper_chat.png" alt="Wallpaper Chat">
+    <a class="btn" href="Wallpaper_chat.png" download="wallpaper_chat.png" title="Télécharger">
+      <!-- Icône SVG stylisée -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M12 16l4-5h-3V4h-2v7H8l4 5zm-8 2v2h16v-2H4z"/>
+      </svg>
+    </a>
   </div>
-
-  <!-- Contenu principal -->
-  <h1>Bravo 🎉<br>Vous avez trouvé le cadeau Thales</h1>
-
-  <div class="image-container">
-    <img src="Wallpaper_chat.png" alt="Cadeau Thales">
-  </div>
-
-  <a href="Wallpaper_chat.png" download="Cadeau_Thales.png" class="btn-download">
-    ⬇️ Télécharger l'image
-  </a>
 </body>
 </html>
